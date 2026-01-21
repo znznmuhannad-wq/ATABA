@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عَتَبَة | أرشيف البلاط النابلسي</title>
+   
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- ATABA BRAND STYLESHEET --- */
+        :root {
+            --color-primary: #7E2C29;
+            --color-bg: #F6F1E1;
+            --color-white: #FFFFFF;
+            --color-gold: #B77D33;
+            --color-sand: #C9A371;
+            --color-clay: #BDAA8C;
+            --color-stone: #8B826B;
+            --color-text-main: #2C2C2C;
+            --color-text-muted: #666666;
+            --font-main: 'Doran', 'Tajawal', 'Tahoma', 'Segoe UI', sans-serif;
+            --font-heading: 'Palestine Regular', 'Tajawal', sans-serif;
+            --container-width: 1440px;
+            --header-height: 100px;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --transition-smooth: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- ANIMATION STYLES --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease-out, transform 1s var(--transition-smooth);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+       
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+
+        @font-face {
+            font-family: 'Palestine Regular';
+            src: url('Palestine-Regular.otf') format('opentype');
+            font-weight: normal; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Doran';
+            src: url('/assets/fonts/Doran-Regular.woff2') format('woff2');
+            font-weight: 400; font-style: normal; font-display: swap;
+        }
+
+        /* --- Global Resets --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 16px; overflow-y: scroll; height: 100%; scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100%;
+        }
+
+        h1, h2, h3, h4, h5, h6, .section-title, .landing-statement {
+            font-family: var(--font-heading);
+        }
+
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 40px; width: 100%; }
+
+        .section-title {
+            color: var(--color-primary);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: ''; position: absolute; bottom: -10px; right: 0;
+            width: 0; height: 3px; background-color: var(--color-gold);
+            transition: width 1.2s var(--transition-smooth) 0.3s;
+        }
+        .reveal.active .section-title::after { width: 60%; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 32px; font-size: 1.1rem; font-weight: 600;
+            border: 2px solid var(--color-primary); background-color: transparent;
+            color: var(--color-primary); border-radius: var(--radius-sm);
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn:hover { background-color: var(--color-primary); color: var(--color-bg); transform: translateY(-3px); }
+        .btn-primary { background-color: var(--color-primary); color: var(--color-bg); }
+
+        .brand-decoration { display: flex; justify-content: center; align-items: center; margin: 3rem auto; padding: 0 20px; opacity: 0.9; }
+        .brand-decoration img { width: 160px; height: auto; transition: 0.5s; }
+        .brand-decoration img:hover { transform: scale(1.1) rotate(3deg); }
+
+        /* --- Header (Global) --- */
+        .site-header {
+            background-color: var(--color-primary);
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            height: var(--header-height); display: flex; align-items: center;
+            color: var(--color-bg); box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: none;
+        }
+        .site-header.scrolled { height: 70px; background-color: rgba(126, 44, 41, 0.98); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .brand-logo img { height: 85px; width: auto; transition: 0.3s; cursor: pointer; }
+        .site-header.scrolled .brand-logo img { height: 55px; }
+
+        .main-nav ul { display: flex; gap: 2rem; list-style: none; }
+        .main-nav a {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--color-bg);
+            transition: 0.3s;
+            text-decoration: none;
+            position: relative;
+        }
+        .main-nav a:hover, .main-nav a.active { color: var(--color-gold); }
+
+        /* --- Page View Logic --- */
+        .page-view { display: none; min-height: 100vh; width: 100%; padding-top: var(--header-height); }
+        #view-hero { padding-top: 0; }
+
+        .page-view.active-view { display: block; animation: fadeInView 0.5s ease; }
+        @keyframes fadeInView { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Hero --- */
+        .hero-page {
+            height: 100vh; width: 100vw;
+            background: linear-gradient(rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0.66)), url('https://i.ibb.co/wrwdhVRr/Hand-on-the-tile.jpg');
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; text-align: center; color: var(--color-bg);
+        }
+        .hero-content h1 { font-size: 4rem; margin-bottom: 1rem; }
+        .hero-content p { font-size: 1.5rem; margin-bottom: 3rem; opacity: 0.9; }
+
+        /* --- Landing --- */
+        .landing-hero-section { width: 100%; height: 100vh; position: relative; overflow: hidden; }
+        .landing-image-frame { width: 100%; height: 100%; background-color: var(--color-text-main); display: flex; align-items: center; justify-content: center; }
+        .landing-image-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .landing-content-overlay { position: relative; z-index: 2; padding: 2rem; max-width: 900px; text-align: center; }
+        .landing-statement { font-size: 3.5rem; color: var(--color-white); text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+
+        .vision-mission-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin: 4rem auto; }
+        .square-card {
+            background: var(--color-white); padding: 2.5rem; border-radius: var(--radius-md); border: 1px solid rgba(189, 170, 140, 0.3);
+            flex: 1 1 350px; max-width: 500px; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            transition: 0.4s;
+        }
+        .square-card:hover { transform: translateY(-10px); border-color: var(--color-gold); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .square-card h3 { color: var(--color-gold); font-size: 2rem; margin-bottom: 1rem; }
+
+        /* Results Card Shape (Old Style Restored) */
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2rem 0 4rem; }
+        .result-card {
+            background: var(--color-white);
+            padding: 2.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(189, 170, 140, 0.3);
+            width: 100%;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.6s var(--transition-smooth), border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .result-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--color-gold);
+            box-shadow: 0 12px 30px rgba(126, 44, 41, 0.1);
+        }
+        .result-card h4 {
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Aslan Craft Sections Styles */
+        .craft-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 3rem 0; }
+        .craft-card {
+            background: var(--color-white);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            border-right: 4px solid var(--color-gold);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .craft-card:hover { transform: translateX(-8px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .craft-card h4 { color: var(--color-primary); margin-bottom: 1rem; font-size: 1.3rem; }
+
+        .cta-bar { background-color: var(--color-primary); color: var(--color-bg); padding: 3rem 1rem; text-align: center; margin-top: 4rem; border-radius: var(--radius-md); }
+
+        /* --- Campaign Outputs --- */
+        .outputs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .product-card {
+            background-color: var(--color-white); border-radius: var(--radius-md); overflow: hidden;
+            transition: 0.4s; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .product-card:hover { transform: translateY(-8px); border-color: var(--color-gold); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+        /* --- Timeline (Aslan) --- */
+        .timeline { display: flex; justify-content: space-between; position: relative; margin: 4rem 0 5rem; padding-top: 1rem; }
+        .timeline::before { content: ''; position: absolute; top: 10px; left: 0; right: 0; height: 3px; background-color: var(--color-gold); z-index: 0; transform: scaleX(0); transform-origin: right; transition: transform 1s ease 0.5s; }
+        .reveal.active.timeline::before { transform: scaleX(1); }
+        .timeline-item { flex: 1; text-align: center; position: relative; padding: 2.5rem 1rem 0; }
+        .timeline-item::after { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background-color: var(--color-primary); border-radius: 50%; border: 4px solid var(--color-bg); z-index: 1; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 3rem 0; }
+        .stat-card { background-color: var(--color-white); padding: 2rem; text-align: center; border: 1px solid var(--color-clay); transition: 0.3s; }
+        .stat-card:hover { border-color: var(--color-primary); }
+        .stat-number { display: block; font-size: 3rem; font-weight: 700; color: var(--color-primary); }
+
+        /* --- Archive --- */
+        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; padding: 2rem 0; }
+        .tile-card { background-color: var(--color-white); border-radius: var(--radius-md); overflow: hidden; transition: 0.4s; cursor: pointer; }
+        .tile-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .tile-image { width: 100%; height: 250px; overflow: hidden; }
+        .tile-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .tile-card:hover .tile-image img { transform: scale(1.1); }
+        .tile-info { padding: 1rem; }
+        .tile-tag { font-size: 0.8rem; color: var(--color-gold); font-weight: bold; }
+
+        /* --- Participation --- */
+        .participation-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; margin-top: 3rem; }
+        #view-participations {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://i.ibb.co/bRySZ2P4/Gemini-Generated-Image-o9zjv2o9zjv2o9zj.png');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        #view-participations .section-title { color: white; }
+        #view-participations main > p { color: white; margin-bottom: 2rem; }
+        .form-box { background-color: var(--color-white); padding: 2rem; border-radius: var(--radius-md); position: sticky; top: 120px; }
+        .form-control { width: 100%; padding: 12px; margin-bottom: 1.5rem; border: 1px solid var(--color-clay); border-radius: var(--radius-sm); font-family: inherit; }
+        .participation-card {
+            background-color: var(--color-white);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-right: 4px solid var(--color-gold);
+            position: relative;
+            animation: cardIn 0.5s ease;
+        }
+        @keyframes cardIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Delete Entry Button CSS */
+        .delete-entry {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #999;
+        }
+        .delete-entry:hover {
+            color: #c00;
+        }
+
+        /* --- Modal --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(5px); }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--color-bg); width: 100%; max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; border-radius: 16px; overflow: hidden; position: relative; }
+        .modal-text-col { padding: 3rem; }
+        .close-modal { position: absolute; top: 15px; left: 15px; font-size: 2.5rem; background: none; border: none; cursor: pointer; color: var(--color-primary); }
+
+        /* --- Footer Styles --- */
+        .site-footer { background-color: var(--color-primary); color: var(--color-bg); padding: 3rem 0; margin-top: 5rem; text-align: center; }
+        .footer-nav { margin-bottom: 1.5rem; }
+        .footer-nav a { margin: 0 1rem; transition: 0.3s; text-decoration: none; color: inherit; font-size: 0.9rem; }
+        .footer-nav a:hover { color: var(--color-gold); }
+        .footer-contact { display: flex; justify-content: center; align-items: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .contact-item { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; flex-direction: row-reverse; color: var(--color-bg); }
+
+        @media (max-width: 900px) {
+            .vision-mission-grid, .participation-layout, .modal-content { grid-template-columns: 1fr; }
+            .timeline { flex-direction: column; border-right: 3px solid var(--color-gold); padding-right: 2rem; }
+            .timeline::before { display: none; }
+            .timeline-item { text-align: right; padding: 0; margin-bottom: 2rem; }
+            .timeline-item::after { left: auto; right: -2.6rem; top: 0; transform: none; }
+            .form-box { position: static; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================== SHARED HEADER ================== -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo" onclick="router(event, 'view-hero')">
+                <img src="https://i.ibb.co/SX85kCVW/Final-White-Logo-png.png" alt="Logo">
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" onclick="router(event, 'view-landing')" data-view="view-landing" class="nav-link">الرئيسية</a></li>
+                    <li><a href="#" onclick="router(event, 'view-campaign')" data-view="view-campaign" class="nav-link">حملة عَتَبَة</a></li>
+                    <li><a href="#" onclick="router(event, 'view-aslan')" data-view="view-aslan" class="nav-link">مصنع أصلان</a></li>
+                    <li><a href="#" onclick="router(event, 'view-archive')" data-view="view-archive" class="nav-link">الأرشيف</a></li>
+                    <li><a href="#" onclick="router(event, 'view-participations')" data-view="view-participations" class="nav-link">مشاركاتكم</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ================== VIEW 1: HERO ================== -->
+    <div id="view-hero" class="page-view active-view">
+        <main class="hero-page">
+            <div class="hero-content">
+                <h1>أرشيف البلاط النابلسي</h1>
+                <p>حرفة حيَة وذاكرة ومكان</p>
+                <div class="hero-actions">
+                    <a href="#" class="btn" style="border-color: #F6F1E1; color: #F6F1E1;" onclick="router(event, 'view-landing')">الرئيسية</a>
+                    <a href="#" class="btn btn-primary" style="background-color: #F6F1E1; color: #7E2C29;" onclick="router(event, 'view-archive')">الأرشيف</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================== VIEW 2: LANDING ================== -->
+    <div id="view-landing" class="page-view">
+        <section class="landing-hero-section">
+            <div class="landing-image-frame">
+                <img src="https://i.ibb.co/pvwGKrhL/Edited-HOUSE-PICTURRE.jpg" alt="Landing Hero">
+                <div class="landing-content-overlay">
+                    <h2 class="landing-statement reveal">حملة عَتَبَة توثّق البلاط النابلسي كجزء من الذاكرة المعمارية الفلسطينية</h2>
+                    <a href="#" class="btn reveal stagger-1" style="border-color:white; color:white;" onclick="router(event, 'view-campaign')">المزيد عن الحملة</a>
+                </div>
+            </div>
+        </section>
+
+        <main class="container">
+            <section class="vision-mission-grid reveal">
+                <div class="square-card stagger-1">
+                    <h3>الرؤية</h3>
+                    <p>أن يُنظر إلى البلاط النابلسي بوصفه تراثًا حيًّا يجسّد الهوية الفلسطينية والمهارة الحِرفية والذاكرة المعمارية، وأن يستعيد مكانته كعلامة على الاستمرارية.</p>
+                </div>
+                <div class="square-card stagger-2">
+                    <h3>الرسالة</h3>
+                    <p>تسعى حملة عَتَبَة إلى تعزيز الوعي بقيمة البلاط النابلسي عبر التصميم والحكاية البصرية، حفاظًا على إرثٍ يستحق أن يبقى.</p>
+                </div>
+            </section>
+
+            <div style="text-align: center; margin-top: 4rem;" class="reveal">
+                <h3 class="section-title">نتائج الحملة</h3>
+            </div>
+            <section class="results-grid reveal">
+                <div class="result-card stagger-1"><h4>رفع الوعي</h4><p>رفع الوعي بقيمة البلاط النابلسي بوصفه تراثًا حيًّا يحمل ذاكرة وهوية.</p></div>
+                <div class="result-card stagger-2"><h4>تعزيز الارتباط</h4><p>تعزيز الارتباط بالتراث عبر السرد البصري والفيلم لإحياء التقدير للحرفة.</p></div>
+                <div class="result-card stagger-3"><h4>الأرشيف الرقمي</h4><p>إطلاق أرشيف يوثّق النقشات ومعانيها وتاريخ المصنع كمصدر معرفي متاح.</p></div>
+                <div class="result-card stagger-4"><h4>المشاركة المجتمعية</h4><p>تفعيل المشاركة المجتمعية وقياس الأثر من خلال محتوى تفاعلي واستبيانات.</p></div>
+            </section>
+
+            <section class="cta-bar reveal">
+                <h2>هل رأيت هذا البلاط في منزلك أو حيك؟</h2>
+                <p style="margin: 1rem 0 2rem;">شاركنا صورتك وقصتك وساهم في بناء الأرشيف الشعبي</p>
+                <a href="#" class="btn" style="border-color: #fff; color: #fff;" onclick="router(event, 'view-participations')">شارك قصتك</a>
+            </section>
+        </main>
+        <div class="brand-decoration reveal"><img src="https://i.ibb.co/ksN7T2Pp/Stickers2.png" alt="Deco"></div>
+        <footer class="site-footer">
+            <div class="footer-nav">
+                <a href="#" onclick="router(event, 'view-landing')">الرئيسية</a>
+                <a href="#" onclick="router(event, 'view-campaign')">حملة عَتَبَة</a>
+                <a href="#" onclick="router(event, 'view-aslan')">مصنع أصلان</a>
+                <a href="#" onclick="router(event, 'view-archive')">الأرشيف</a>
+                <a href="#" onclick="router(event, 'view-participations')">مشاركاتكم</a>
+            </div>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span style="direction: ltr;">+962 79 553 32210</span>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <span>ataba@gmail.com</span>
+                </div>
+            </div>
+            <p>&copy; 2026 حملة عَتَبَة - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <!-- ================== VIEW 3: CAMPAIGN ================== -->
+    <div id="view-campaign" class="page-view">
+        <header class="site-header">
+            <div class="container nav-container">
+                <div class="brand-logo" onclick="router(event, 'view-hero')" style="cursor:pointer">
+                    <img src="https://i.ibb.co/SX85kCVW/Final-White-Logo-png.png" alt="Logo">
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" onclick="router(event, 'view-landing')">الرئيسية</a></li>
+                        <li><a href="#" onclick="router(event, 'view-campaign')" class="active">حملة عَتَبَة</a></li>
+                        <li><a href="#" onclick="router(event, 'view-aslan')">مصنع أصلان</a></li>
+                        <li><a href="#" onclick="router(event, 'view-archive')">الأرشيف</a></li>
+                        <li><a href="#" onclick="router(event, 'view-participations')">مشاركاتكم</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <section class="landing-hero-section" style="height: 85vh;">
+            <div class="landing-image-frame">
+                <img src="https://i.ibb.co/gpfLX05/landscape.jpg" alt="Campaign Hero">
+                <div class="landing-content-overlay">
+                    <h1 class="landing-statement reveal">حملة عَتَبَة</h1>
+                </div>
+            </div>
+        </section>
+
+        <main class="container" style="padding-top: 4rem;">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto 5rem;" class="reveal stagger-1">
+                <div class="brand-decoration" style="margin: 0 auto 1.5rem;"><img src="https://i.ibb.co/ksN7T2Pp/Stickers2.png" alt="Deco" style="width: 160px;"></div>
+                <p style="font-size: 1.4rem; line-height: 1.9;">حملة توعوية تُعيد تقديم البلاط النابلسي بوصفه تراثًا حيًّا يحمل ذاكرة البيوت وهوية المكان وصمود الناس، لا كعنصرٍ زخرفي عابر. ومن خلال السرد القصصي، والأفلام، والمواد البصرية، تُشعل الحملة حوارًا معاصرًا يقرّب الشباب من جذورهم، ويؤكد أن هذا الإرث جزءٌ حيّ من حاضرنا ويستحق أن يمتدّ إلى المستقبل.</p>
+            </div>
+
+            <section class="vision-mission-grid reveal stagger-2">
+                <div class="square-card stagger-1"><h3>لماذا؟</h3><p>لأن العمارة ليست مجرد حجارة، بل هوية. يواجه البلاط التقليدي خطر الاندثار أمام الإنتاج التجاري الحديث، مما يهدد بمحو جزء أصيل من هويتنا البصرية.</p></div>
+                <div class="square-card stagger-2"><h3>ماذا؟</h3><p>قمنا بزيارات ميدانية لمصنع أصلان في نابلس، وأجرينا مقابلات مع حرفيين، وجمعنا صوراً وشهادات من سكان المنازل القديمة لتوثيق هذه الرحلة.</p></div>
+            </section>
+
+            <section style="margin-bottom: 4rem;" class="reveal stagger-3">
+                <h3 class="section-title">مخرجات الحملة</h3>
+                <div class="outputs-grid">
+                    <div class="product-card stagger-1">
+                        <div style="position: relative; width: 100%; padding-top: 56.25%;">
+                            <iframe
+                                style="position: absolute; inset:0; width:100%; height:100%;"
+                                src="https://player.vimeo.com/video/1155099968?h=00000000"
+                                srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}</style><a href=https://player.vimeo.com/video/1155099968?autoplay=1><img src=https://i.ibb.co/jZj1wD03/C0028T01.jpg alt='حكاية بلاط' style='width:100%;height:100%'><span>▶</span></a>"
+                                title="حكاية بلاط"
+                                frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div style="padding: 1.5rem;"><h4>حكاية بلاط</h4><p class="text-muted">خُطُواتٌ عابِرَة… وأرْضٌ لا تَنسى</p></div>
+                    </div>
+                    <div class="product-card stagger-2">
+                        <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                            <img src="https://i.ibb.co/mk5gfcd/IMG-0132.jpg" style="position: absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.8;">
+                            <div style="position: absolute; inset:0; display:flex; align-items:center; justify-content:center; color:white; font-size:3rem;">▶</div>
+                        </div>
+                        <div style="padding: 1.5rem;"><h4>وثائقي مصنع أصلان</h4><p class="text-muted">قصة مصنع أصلان والصمود</p></div>
+                    </div>
+                    <a href="https://publuu.com/flip-book/1045125/2316250" target="_blank" class="product-card stagger-3" style="text-decoration:none; color:inherit;">
+                        <div style="position: relative; width: 100%; padding-top: 56.25%;">
+                            <img src="https://i.ibb.co/6cNSmWkD/Render-Mockup-1600-1200-2026-01-18-3.png" style="position: absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div style="padding: 1.5rem;"><h4>كُتيّب حملة عَتَبَة</h4><p class="text-muted">من المكان، للمكان</p></div>
+                    </a>
+                </div>
+            </section>
+        </main>
+        <div class="brand-decoration reveal"><img src="https://i.ibb.co/ksN7T2Pp/Stickers2.png" alt="Deco"></div>
+        <footer class="site-footer">
+            <div class="footer-nav">
+                <a href="#" onclick="router(event, 'view-landing')">الرئيسية</a>
+                <a href="#" onclick="router(event, 'view-campaign')">حملة عَتَبَة</a>
+                <a href="#" onclick="router(event, 'view-aslan')">مصنع أصلان</a>
+                <a href="#" onclick="router(event, 'view-archive')">الأرشيف</a>
+                <a href="#" onclick="router(event, 'view-participations')">مشاركاتكم</a>
+            </div>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span style="direction: ltr;">+962 79 553 32210</span>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <span>ataba@gmail.com</span>
+                </div>
+            </div>
+            <p>&copy; 2026 حملة عَتَبَة - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <!-- ================== VIEW 4: ASLAN ================== -->
+    <div id="view-aslan" class="page-view">
+        <header class="site-header">
+            <div class="container nav-container">
+                <div class="brand-logo" onclick="router(event, 'view-hero')" style="cursor:pointer">
+                    <img src="https://i.ibb.co/SX85kCVW/Final-White-Logo-png.png" alt="Logo">
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" onclick="router(event, 'view-landing')">الرئيسية</a></li>
+                        <li><a href="#" onclick="router(event, 'view-campaign')">حملة عَتَبَة</a></li>
+                        <li><a href="#" onclick="router(event, 'view-aslan')" class="active">مصنع أصلان</a></li>
+                        <li><a href="#" onclick="router(event, 'view-archive')">الأرشيف</a></li>
+                        <li><a href="#" onclick="router(event, 'view-participations')">مشاركاتكم</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <section class="landing-hero-section" style="height: 85vh;">
+            <div class="landing-image-frame"><img src="https://i.ibb.co/G4KXwvb4/a01de941493b438488f1de920ea0e532-6.jpg" alt="Aslan Factory"><div class="landing-content-overlay"><h1 class="landing-statement reveal">مصنع أصلان للبلاط</h1></div></div>
+        </section>
+
+        <main class="container" style="padding-top: 4rem;">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto 5rem;" class="reveal">
+                <div class="brand-decoration" style="margin: 0 auto 1.5rem;"><img src="https://i.ibb.co/ksN7T2Pp/Stickers2.png" alt="Deco" style="width: 160px;"></div>
+                <h3 style="color: var(--color-gold); margin-bottom: 1rem; font-size: 1.8rem;">نبذة</h3>
+                <p style="font-size: 1.4rem; line-height: 1.9;">يُعدّ مصنع أصلان أحد الأماكن التي ما زالت تحفظ حرفة البلاط التقليدي بوصفها ممارسة حيّة، لا مجرّد ذاكرة. هنا، لا يُنتَج البلاط كعنصر ديكوري فقط، بل كحاملٍ للهوية، وامتدادٍ لقصص البيوت والعتبات التي مرّت فوقها أجيال.</p>
+            </div>
+
+            <section class="stats-grid reveal">
+                <div class="stat-card stagger-1"><span class="stat-number">100+</span><span>عام من العمل</span></div>
+                <div class="stat-card stagger-2"><span class="stat-number">550</span><span>قالب نقش معدني</span></div>
+                <div class="stat-card stagger-3"><span class="stat-number">7</span><span>مراحل يدوية للإنتاج</span></div>
+            </section>
+
+            <!-- مراحل الحرفة اليدوية -->
+            <div style="margin-top: 6rem;" class="reveal">
+                <h3 class="section-title">مراحل الحرفة اليدوية</h3>
+                <div class="craft-grid">
+                    <div class="craft-card stagger-1"><h4>1. تحضير القالب</h4><p>وضع القالب المعدني اليدوي بدقة داخل الإطار الحديدي لبدء عملية التشكيل.</p></div>
+                    <div class="craft-card stagger-2"><h4>2. صب الألوان</h4><p>سكب خليط الأكاسيد الملونة والأسمنت الأبيض داخل فتحات القالب اليدوي حسب النقشة المطلوبة.</p></div>
+                    <div class="craft-card stagger-3"><h4>3. الكبس الهيدروليكي</h4><p>استخدام المكبس اليدوي لضغط الطبقات ودمج الألوان مع جسم البلاطة بقوة هائلة لضمان التماسك.</p></div>
+                    <div class="craft-card stagger-4"><h4>4. المعالجة والماء</h4><p>غمر البلاط بالماء لفترة محددة ثم تركه ليجف ببطء في الظل لضمان صلابته وجودته النهائية.</p></div>
+                </div>
+            </div>
+
+            <!-- أنماط البلاط النابلسي -->
+            <div style="margin-top: 6rem; margin-bottom: 6rem;" class="reveal">
+                <h3 class="section-title">أنماط البلاط النابلسي</h3>
+                <div class="results-grid">
+                    <div class="result-card stagger-1"><h4>النقش الهندسي</h4><p>يعتمد على التكرار والتماثل، مثل النجمة الثمانية والتاج والدوائر المتداخلة التي تعبر عن التوازن.</p></div>
+                    <div class="result-card stagger-2"><h4>النقش النباتي</h4><p>مستوحى من الطبيعة المحيطة، مثل ورق العنب والورود والزخارف الليّنة التي تضفي روح الطبيعة.</p></div>
+                    <div class="result-card stagger-3"><h4>نقش السجاد</h4><p>تصاميم معقدة وكثيفة تغطي مساحة الغرفة كأنها قطعة سجاد منسوجة تتوسطها "صرة" مركزية.</p></div>
+                </div>
+            </div>
+
+            <section class="timeline reveal">
+                <div class="timeline-item stagger-1"><h3>1912</h3><p>تأسيس المصنع في مدينة نابلس القديمة وبداية استيراد القوالب.</p></div>
+                <div class="timeline-item stagger-2"><h3>1948</h3><p>استمرار العمل رغم الظروف السياسية وتوسع التوزيع إلى الأردن.</p></div>
+                <div class="timeline-item stagger-3"><h3>2018</h3><p>توقف التصدير للأردن بسبب سياسات الاحتلال.</p></div>
+                <div class="timeline-item stagger-4"><h3>2024</h3><p>المصنع الوحيد الصامد الذي يعمل بالطرق التقليدية اليدوية بالكامل.</p></div>
+            </section>
+
+            <section style="max-width: 800px; margin: 0 auto 4rem; text-align: center;" class="reveal">
+                <h2 style="color: var(--color-stone); margin-bottom: 1.5rem;">وثائقي مصنع أصلان</h2>
+                <p style="font-size: 1.15rem; margin-bottom: 2rem; line-height: 1.8;">وثائقي مصنع أصلان يوثّق حكاية مكان ظلّ حاضرًا في تفاصيل البيوت والذاكرة الجماعية، من خلال تتبّع تاريخ المصنع وأثره على الحرفة والمدينة. فيلم يستعيد قصص الأيدي التي صنعت، والأرضيات التي شهدت حياة الناس، ليقدّم المصنع لا كمساحة إنتاج فقط، بل كجزء حيّ من هوية المكان واستمراريته.</p>
+                <a href="https://drive.google.com/file/d/1PdUSu0WDo5UAWKoECauTR1x8LjQUmCl2/view?usp=drive_link" target="_blank" style="text-decoration: none;">
+                    <div style="position: relative; width: 100%; padding-top: 56.25%; background:#000; border-radius:12px; overflow:hidden; cursor:pointer;">
+                        <img src="https://i.ibb.co/mk5gfcd/IMG-0132.jpg" style="position: absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.8;">
+                        <div style="position: absolute; inset:0; display:flex; align-items:center; justify-content:center; color:white; font-size:5rem;">▶</div>
+                    </div>
+                </a>
+            </section>
+        </main>
+        <div class="brand-decoration reveal"><img src="https://i.ibb.co/ksN7T2Pp/Stickers2.png" alt="Deco"></div>
+        <footer class="site-footer">
+            <div class="footer-nav">
+                <a href="#" onclick="router(event, 'view-landing')">الرئيسية</a>
+                <a href="#" onclick="router(event, 'view-campaign')">حملة عَتَبَة</a>
+                <a href="#" onclick="router(event, 'view-aslan')">مصنع أصلان</a>
+                <a href="#" onclick="router(event, 'view-archive')">الأرشيف</a>
+                <a href="#" onclick="router(event, 'view-participations')">مشاركاتكم</a>
+            </div>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span style="direction: ltr;">+962 79 553 32210</span>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <span>ataba@gmail.com</span>
+                </div>
+            </div>
+            <p>&copy; 2026 حملة عَتَبَة - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <!-- ================== VIEW 5: ARCHIVE ================== -->
+    <div id="view-archive" class="page-view">
+        <header class="site-header">
+            <div class="container nav-container">
+                <div class="brand-logo" onclick="router(event, 'view-hero')" style="cursor:pointer">
+                    <img src="https://i.ibb.co/SX85kCVW/Final-White-Logo-png.png" alt="Logo">
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" onclick="router(event, 'view-landing')">الرئيسية</a></li>
+                        <li><a href="#" onclick="router(event, 'view-campaign')">حملة عَتَبَة</a></li>
+                        <li><a href="#" onclick="router(event, 'view-aslan')">مصنع أصلان</a></li>
+                        <li><a href="#" onclick="router(event, 'view-archive')" class="active">الأرشيف</a></li>
+                        <li><a href="#" onclick="router(event, 'view-participations')">مشاركاتكم</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container" style="padding-top: 3rem;">
+            <h1 class="section-title reveal">أرشيف النقوش</h1>
+            <p class="reveal" style="font-size: 1.15rem; margin-bottom: 3rem; max-width: 1000px;">
+                تحمل النقوش أنماطًا متوارثة تجمع بين الهندسة واللمسة النباتية، بألوان مستخلصة من مصادر طبيعية فلسطينية نابلسية، لتكون لغة بصرية تختزن ذاكرة البيوت وحضور الحرفة عبر الزمن.
+            </p>
+            <div class="archive-grid reveal">
+                <!-- Tile 1 -->
+                <div class="tile-card stagger-1" onclick="openArchiveModal('التاج', 'نقشة ترمز إلى الثبات والهيبة، بتكوين متوازن يوحي بالقوة والاستمرارية.', 'انتشرت في بلاط المداخل والعتبات داخل البيوت التقليدية في نابلس.', 'https://i.ibb.co/DDWLSjdY/Crown-website.jpg')">
+                    <div class="tile-image"><img src="https://i.ibb.co/DDWLSjdY/Crown-website.jpg" alt="التاج"></div>
+                    <div class="tile-info"><h3>التاج</h3><span class="tile-tag">هندسي</span></div>
+                </div>
+                <!-- Tile 2 -->
+                <div class="tile-card stagger-2" onclick="openArchiveModal('النجمة الثمانية', 'نقشة تعتمد على التوازن والتكرار، وترمز إلى الانسجام والامتداد.', 'انتشرت في البيوت النابلسية، وظهرت في أرضيات الغرف الواسعة.', 'https://i.ibb.co/xqb7MQjX/The-star.jpg')">
+                    <div class="tile-image"><img src="https://i.ibb.co/xqb7MQjX/The-star.jpg" alt="النجمة"></div>
+                    <div class="tile-info"><h3>النجمة الثمانية</h3><span class="tile-tag">هندسي</span></div>
+                </div>
+                <!-- Tile 3 -->
+                <div class="tile-card stagger-3" onclick="openArchiveModal('ورق العنب', 'نقشة ترمز إلى الثبات والهيبة، بتكوين متوازن يوحي بالقوة والاستمرارية.', 'ظهرت في البلاط التقليدي داخل البيوت، خصوصًا في المساحات الداخلية.', 'https://i.ibb.co/VWFVc04V/Grape-Leaf-Orange.jpg')">
+                    <div class="tile-image"><img src="https://i.ibb.co/VWFVc04V/Grape-Leaf-Orange.jpg" alt="ورق عنب"></div>
+                    <div class="tile-info"><h3>ورق العنب</h3><span class="tile-tag">نباتي</span></div>
+                </div>
+                <!-- Tile 4 -->
+                <div class="tile-card stagger-4" onclick="openArchiveModal('الضّامّة', 'نقشة تعتمد على التكرار البسيط والتوازن، وتوحي بالترابط والاستقرار.', 'انتشرت في البيوت النابلسية، خصوصًا في المساحات الواسعة.', 'https://i.ibb.co/MkWMWKtt/Dammah-1.jpg')">
+                    <div class="tile-image"><img src="https://i.ibb.co/MkWMWKtt/Dammah-1.jpg" alt="الضامة"></div>
+                    <div class="tile-info"><h3>الضّامّة</h3><span class="tile-tag">هندسي ثلاثي الأبعاد</span></div>
+                </div>
+                <!-- Tile 5 -->
+                <div class="tile-card stagger-1" onclick="openArchiveModal('الوردتين', 'نقشة نباتية تقوم على التكرار الناعم، وتعبّر عن التوازن والازدواجية والانسجام.', 'ظهرت في البلاط التقليدي داخل البيوت، خصوصًا في المساحات الداخلية.', 'https://i.ibb.co/RkBh7gZQ/The-Two-Flower.jpg')">
+                    <div class="tile-image"><img src="https://i.ibb.co/RkBh7gZQ/The-Two-Flower.jpg" alt="الوردتين"></div>
+                    <div class="tile-info"><h3>الوردتين</h3><span class="tile-tag">نباتي</span></div>
+                </div>
+                <!-- Tile 6 -->
+                <div class="tile-card stagger-2" onclick="openArchiveModal('القُدسيّة', 'نقشة هندسية تعتمد على الخطوط المتداخلة والتكرار، وتعبّر عن الترابط والامتداد.', 'سُمّيت القُدسيّة نسبةً إلى القدس، وانتشرت في نابلس في المداخل والممرات.', 'https://i.ibb.co/dw8ScF3n/Al-Qudsiyya.jpg')">
+                    <div class="tile-image"><img src="https://i.ibb.co/dw8ScF3n/Al-Qudsiyya.jpg" alt="القُدسيّة"></div>
+                    <div class="tile-info"><h3>القُدسيّة</h3><span class="tile-tag">هندسي</span></div>
+                </div>
+                <!-- Tile 7 -->
+                <div class="tile-card stagger-3" onclick="openArchiveModal('السجادة', 'نقشة زخرفية غنية بالتفاصيل، تحاكي تصميم السجاد الشرقي لتعطي فخامة للأرضيات.', 'استخدمت غالبًا في غرف الضيوف (المضافة) والصالات الرئيسية.', 'https://i.ibb.co/MkZzdN0P/Sijjadeh.jpg')">
+                    <div class="tile-image"><img src="https://i.ibb.co/MkZzdN0P/Sijjadeh.jpg" alt="السجادة"></div>
+                    <div class="tile-info"><h3>السجادة</h3><span class="tile-tag">زخرفي</span></div>
+                </div>
+                <!-- Tile 8 -->
+                <div class="tile-card stagger-4" onclick="openArchiveModal('السلسلة', 'نقشة هندسية بسيطة تعتمد على الترابط المستمر، وترمز للوحدة والتماسك.', 'ظهرت كإطار (زنار) حول السجادات البلاطية أو في الممرات الضيقة.', 'https://i.ibb.co/rRYtQLFr/Silseleh.jpg')">
+                    <div class="tile-image"><img src="https://i.ibb.co/rRYtQLFr/Silseleh.jpg" alt="السلسلة"></div>
+                    <div class="tile-info"><h3>السلسلة</h3><span class="tile-tag">هندسي</span></div>
+                </div>
+            </div>
+        </main>
+       
+        <div id="archiveModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeArchiveModal()">&times;</button>
+                <div id="modalImgBox" style="background: #ddd"></div>
+                <div class="modal-text-col">
+                    <h2 id="modalTitle" style="color: var(--color-primary); font-size: 2.5rem; margin-bottom:1rem;"></h2>
+                    <h4 style="color: var(--color-gold);">المعنى</h4>
+                    <p id="modalMeaning" style="margin-bottom: 2rem;"></p>
+                    <h4 style="color: var(--color-gold);">أين ظهر؟</h4>
+                    <p id="modalLocation"></p>
+                </div>
+            </div>
+        </div>
+        <div class="brand-decoration reveal"><img src="https://i.ibb.co/ksN7T2Pp/Stickers2.png" alt="Deco"></div>
+        <footer class="site-footer">
+            <div class="footer-nav">
+                <a href="#" onclick="router(event, 'view-landing')">الرئيسية</a>
+                <a href="#" onclick="router(event, 'view-campaign')">حملة عَتَبَة</a>
+                <a href="#" onclick="router(event, 'view-aslan')">مصنع أصلان</a>
+                <a href="#" onclick="router(event, 'view-archive')">الأرشيف</a>
+                <a href="#" onclick="router(event, 'view-participations')">مشاركاتكم</a>
+            </div>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span style="direction: ltr;">+962 79 553 32210</span>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <span>ataba@gmail.com</span>
+                </div>
+            </div>
+            <p>&copy; 2026 حملة عَتَبَة - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <!-- ================== VIEW 6: PARTICIPATIONS ================== -->
+    <div id="view-participations" class="page-view">
+        <header class="site-header">
+            <div class="container nav-container">
+                <div class="brand-logo" onclick="router(event, 'view-hero')" style="cursor:pointer">
+                    <img src="https://i.ibb.co/SX85kCVW/Final-White-Logo-png.png" alt="Logo">
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" onclick="router(event, 'view-landing')">الرئيسية</a></li>
+                        <li><a href="#" onclick="router(event, 'view-participations')" class="active">مشاركاتكم</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container" style="padding-top: 3rem;">
+            <h1 class="section-title reveal" style="color: white;">شاركنا الذاكرة</h1>
+            <p class="reveal stagger-1" style="color: white;">هل يوجد هذا البلاط في منزلك أو مكان عملك؟ شاركنا التفاصيل لنبني الأرشيف معاً.</p>
+
+            <div class="participation-layout">
+                <aside class="reveal stagger-2">
+                    <div class="form-box">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--color-primary);">أضف مشاركة جديدة</h3>
+                        <form id="pForm">
+                            <input type="text" id="pName" class="form-control" placeholder="اسمك" required>
+                            <input type="text" id="pPlace" class="form-control" placeholder="المكان / المنطقة" required>
+                            <textarea id="pDesc" class="form-control" rows="4" placeholder="صف لنا النقش أو ذكرياتك..." required></textarea>
+                            <button type="submit" class="btn btn-primary" style="width:100%">إرسال المشاركة</button>
+                        </form>
+                    </div>
+                </aside>
+                <section class="reveal stagger-3">
+                    <div id="pFeed"></div>
+                </section>
+            </div>
+        </main>
+        <div class="brand-decoration reveal"><img src="https://i.ibb.co/ksN7T2Pp/Stickers2.png" alt="Deco"></div>
+        <footer class="site-footer">
+            <div class="footer-nav">
+                <a href="#" onclick="router(event, 'view-landing')">الرئيسية</a>
+                <a href="#" onclick="router(event, 'view-campaign')">حملة عَتَبَة</a>
+                <a href="#" onclick="router(event, 'view-aslan')">مصنع أصلان</a>
+                <a href="#" onclick="router(event, 'view-archive')">الأرشيف</a>
+                <a href="#" onclick="router(event, 'view-participations')">مشاركاتكم</a>
+            </div>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span style="direction: ltr;">+962 79 553 32210</span>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <span>ataba@gmail.com</span>
+                </div>
+            </div>
+            <p>&copy; 2026 حملة عَتَبَة - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- ROUTER ---
+        function router(e, viewId) {
+            if (e) e.preventDefault();
+           
+            // Toggle Views
+            document.querySelectorAll('.page-view').forEach(v => {
+                v.classList.remove('active-view');
+            });
+           
+            const target = document.getElementById(viewId);
+            if (target) target.classList.add('active-view');
+           
+            // Header visibility logic
+            const header = document.querySelector('.site-header');
+            if (viewId === 'view-hero') {
+                header.style.display = 'none';
+            } else {
+                header.style.display = 'flex';
+            }
+           
+            // Force Scroll to top
+            window.scrollTo(0, 0);
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+
+            // Update Header Nav Links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-view') === viewId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Re-trigger scroll reveal animations
+            document.querySelectorAll('.reveal').forEach(el => el.classList.remove('active'));
+            setTimeout(initReveals, 150);
+        }
+
+        // --- SCROLL REVEALS ---
+        function initReveals() {
+            const observerOptions = {
+                threshold: 0.05,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+           
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // --- MODAL & DATA LOGIC ---
+        function openArchiveModal(title, meaning, loc, img) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMeaning').innerText = meaning;
+            document.getElementById('modalLocation').innerText = loc;
+            document.getElementById('modalImgBox').innerHTML = `<img src="${img}" style="width:100%; height:100%; object-fit:cover;">`;
+            document.getElementById('archiveModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeArchiveModal() {
+            document.getElementById('archiveModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // --- PARTICIPATIONS (Logic for adding and local deletion) ---
+        const pForm = document.getElementById("pForm");
+        const pFeed = document.getElementById("pFeed");
+
+        pForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("pName").value;
+            const place = document.getElementById("pPlace").value;
+            const desc = document.getElementById("pDesc").value;
+
+            const entry = document.createElement("div");
+            entry.className = "participation-card bg-white p-6 mb-4 rounded shadow-sm reveal active";
+            entry.style.position = "relative";
+
+            entry.innerHTML = `
+                <button class="delete-entry" aria-label="حذف المشاركة">&times;</button>
+                <h4 style="color:var(--color-primary)">${name}</h4>
+                <p style="color:var(--color-gold); font-weight:bold; font-size:0.9rem">📍 ${place}</p>
+                <p>${desc}</p>
+            `;
+
+            pFeed.prepend(entry);
+
+            // Addition of delete functionality: CLICKING X REMOVES ENTRY FROM DOM
+            entry.querySelector(".delete-entry").addEventListener("click", () => {
+                entry.remove();
+            });
+
+            pForm.reset();
+        });
+
+        window.onscroll = () => {
+            const header = document.querySelector('.site-header');
+            if(header && header.style.display !== 'none') {
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('.site-header');
+            if (document.getElementById('view-hero').classList.contains('active-view')) {
+                header.style.display = 'none';
+            }
+            initReveals();
+        });
+    </script>
+</body>
+</html>
